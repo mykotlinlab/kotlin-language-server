@@ -3,6 +3,7 @@ kotlinVersion = "2.1.0"
 lsp4jVersion = "0.21.2"
 exposedVersion = "0.37.3"
 jmhVersion = "1.20"
+slf4j = "1.6.1"
 
 [libraries]
 org-jetbrains-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinVersion" }
@@ -42,6 +43,10 @@ org-xerial-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version = "3.41.2.
 
 # buildSrc
 org-jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin",version.ref = "kotlinVersion" }
+
+org-slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+org-slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+
 
 [plugins]
 com-github-jk1-tcdeps = { id = "com.github.jk1.tcdeps", version = "1.2" }
