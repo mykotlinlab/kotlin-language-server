@@ -44,6 +44,7 @@ enum class SemanticTokenType(val typeName: String) {
     TYPE(SemanticTokenTypes.Type),
     STRING(SemanticTokenTypes.String),
     NUMBER(SemanticTokenTypes.Number),
+
     // Since LSP does not provide a token type for string interpolation
     // entries, we use Variable as a fallback here for now
     INTERPOLATION_ENTRY(SemanticTokenTypes.Variable)
@@ -61,7 +62,11 @@ val semanticTokensLegend = SemanticTokensLegend(
     SemanticTokenModifier.entries.map { it.modifierName }
 )
 
-data class SemanticToken(val range: Range, val type: SemanticTokenType, val modifiers: Set<SemanticTokenModifier> = setOf())
+data class SemanticToken(
+    val range: Range,
+    val type: SemanticTokenType,
+    val modifiers: Set<SemanticTokenModifier> = setOf()
+)
 
 /**
  * Computes LSP-encoded semantic tokens for the given range in the
@@ -86,7 +91,8 @@ fun encodeTokens(tokens: Sequence<SemanticToken>): List<Int> {
         if (token.range.start.line == token.range.end.line) {
             val length = token.range.end.character - token.range.start.character
             val deltaLine = token.range.start.line - (last?.range?.start?.line ?: 0)
-            val deltaStart = token.range.start.character - (last?.takeIf { deltaLine == 0 }?.range?.start?.character ?: 0)
+            val deltaStart =
+                token.range.start.character - (last?.takeIf { deltaLine == 0 }?.range?.start?.character ?: 0)
 
             encoded.add(deltaLine)
             encoded.add(deltaStart)
@@ -107,7 +113,11 @@ private fun encodeModifiers(modifiers: Set<SemanticTokenModifier>): Int = modifi
     .map { 1 shl it.ordinal }
     .fold(0, Int::or)
 
-private fun elementTokens(element: PsiElement, bindingContext: BindingContext, range: Range? = null): Sequence<SemanticToken> {
+private fun elementTokens(
+    element: PsiElement,
+    bindingContext: BindingContext,
+    range: Range? = null
+): Sequence<SemanticToken> {
     val file = element.containingFile
     val textRange = range?.let { TextRange(offset(file.text, it.start), offset(file.text, it.end)) }
     return element
@@ -134,6 +144,7 @@ private fun elementToken(element: PsiElement, bindingContext: BindingContext): S
                     ClassKind.ANNOTATION_CLASS -> SemanticTokenType.TYPE // annotations look nicer this way
                     else -> SemanticTokenType.FUNCTION
                 }
+
                 is FunctionDescriptor -> SemanticTokenType.FUNCTION
                 is ClassDescriptor -> when (target.kind) {
                     ClassKind.ENUM_ENTRY -> SemanticTokenType.ENUM_MEMBER
@@ -143,6 +154,7 @@ private fun elementToken(element: PsiElement, bindingContext: BindingContext): S
                     ClassKind.ENUM_CLASS -> SemanticTokenType.ENUM
                     else -> SemanticTokenType.TYPE
                 }
+
                 else -> return null
             }
             val isConstant = (target as? VariableDescriptor)?.let { !it.isVar || it.isConst } ?: false
@@ -170,7 +182,7 @@ private fun elementToken(element: PsiElement, bindingContext: BindingContext): S
             }
 
             if (element is KtModifierListOwner && element.hasModifier(KtTokens.ABSTRACT_KEYWORD)) {
-                    modifiers.add(SemanticTokenModifier.ABSTRACT)
+                modifiers.add(SemanticTokenModifier.ABSTRACT)
             }
 
             SemanticToken(identifierRange, tokenType, modifiers)
@@ -179,6 +191,7 @@ private fun elementToken(element: PsiElement, bindingContext: BindingContext): S
         // Literals and string interpolations
         is KtSimpleNameStringTemplateEntry ->
             SemanticToken(elementRange, SemanticTokenType.INTERPOLATION_ENTRY)
+
         is PsiLiteralExpression -> {
             val tokenType = when (element.type) {
                 PsiTypes.intType(), PsiTypes.longType(), PsiTypes.doubleType() -> SemanticTokenType.NUMBER
@@ -188,6 +201,7 @@ private fun elementToken(element: PsiElement, bindingContext: BindingContext): S
             }
             SemanticToken(elementRange, tokenType)
         }
+
         else -> null
     }
 }
