@@ -4,8 +4,11 @@ lsp4jVersion = "0.23.1"
 exposedVersion = "0.37.3"
 jmhVersion = "1.20"
 slf4j = "2.0.16"
+gruava = "33.4.0-jre"
 
 [libraries]
+com-google-guava = { module = "com.google.guava:guava", version.ref = "gruava" }
+
 org-jetbrains-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinVersion" }
 org-jetbrains-kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler", version.ref = "kotlinVersion" }
 org-jetbrains-kotlin-ktscompiler = { module = "org.jetbrains.kotlin:kotlin-scripting-compiler", version.ref = "kotlinVersion" }
@@ -42,7 +45,7 @@ org-openjdk-jmh-core = { module = "org.openjdk.jmh:jmh-core", version.ref = "jmh
 org-xerial-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version = "3.48.0.0" }
 
 # buildSrc
-org-jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin",version.ref = "kotlinVersion" }
+org-jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinVersion" }
 
 org-slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 org-slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
