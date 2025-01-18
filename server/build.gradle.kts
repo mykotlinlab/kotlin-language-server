@@ -110,7 +110,7 @@ tasks.register<JavaExec>("debugRun") {
     standardInput = System.`in`
 
     jvmArgs(debugArgs)
-    args(listOf("--tcpServerPort", serverDebugPort))
+    args(listOf("--tcpServerPort", serverDebugPort, "--tcpDebug"))
     doLast { println("Using debug port $debugPort") }
 }
 
