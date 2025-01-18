@@ -464,7 +464,7 @@ class Compiler(
     private val outputDirectory: File,
 ) : Closeable {
     private var closed = false
-    private val localFileSystem: VirtualFileSystem
+    private val localFileSystem: VirtualFileSystem = VirtualFileManager.getInstance().getFileSystem(StandardFileSystems.FILE_PROTOCOL)
 
     private val defaultCompileEnvironment = CompilationEnvironment(javaSourcePath, classPath, scriptsConfig)
     private val buildScriptCompileEnvironment = buildScriptClassPath
@@ -478,10 +478,6 @@ class Compiler(
         }
     }
 
-    init {
-        localFileSystem = VirtualFileManager.getInstance().getFileSystem(StandardFileSystems.FILE_PROTOCOL)
-    }
-
     /**
      * Updates the compiler environment using the given
      * configuration (which is a class from this project).
@@ -491,7 +487,7 @@ class Compiler(
         buildScriptCompileEnvironment?.updateConfiguration(config)
     }
 
-    fun createPsiFile(content: String, file: Path = Paths.get("dummy.virtual.kt"), language: Language = KotlinLanguage.INSTANCE, kind: CompilationKind = CompilationKind.DEFAULT): PsiFile {
+    private fun createPsiFile(content: String, file: Path = Paths.get("dummy.virtual.kt"), language: Language = KotlinLanguage.INSTANCE, kind: CompilationKind = CompilationKind.DEFAULT): PsiFile {
         assert(!content.contains('\r'))
 
         val new = psiFileFactoryFor(kind).createFileFromText(file.toString(), language, content, true, false)
