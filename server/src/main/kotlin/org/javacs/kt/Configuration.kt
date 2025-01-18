@@ -12,21 +12,21 @@ import java.nio.file.InvalidPathException
 import java.nio.file.Path
 import java.nio.file.Paths
 
-data class SnippetsConfiguration(
+public data class SnippetsConfiguration(
     /** Whether code completion should return VSCode-style snippets. */
     var enabled: Boolean = true
 )
 
-data class CodegenConfiguration(
+public data class CodegenConfiguration(
     /** Whether to enable code generation to a temporary build directory for Java interoperability. */
     var enabled: Boolean = false
 )
 
-data class CompletionConfiguration(
+public data class CompletionConfiguration(
     val snippets: SnippetsConfiguration = SnippetsConfiguration()
 )
 
-data class DiagnosticsConfiguration(
+public data class DiagnosticsConfiguration(
     /** Whether diagnostics are enabled. */
     var enabled: Boolean = true,
     /** The minimum severity of enabled diagnostics. */
@@ -35,21 +35,21 @@ data class DiagnosticsConfiguration(
     var debounceTime: Long = 250L
 )
 
-data class JVMConfiguration(
+public data class JVMConfiguration(
     /** Which JVM target the Kotlin compiler uses. See Compiler.jvmTargetFrom for possible values. */
     var target: String = "default"
 )
 
-data class CompilerConfiguration(
+public data class CompilerConfiguration(
     val jvm: JVMConfiguration = JVMConfiguration()
 )
 
-data class IndexingConfiguration(
+public data class IndexingConfiguration(
     /** Whether an index of global symbols should be built in the background. */
     var enabled: Boolean = true
 )
 
-data class ExternalSourcesConfiguration(
+public data class ExternalSourcesConfiguration(
     /** Whether kls-URIs should be sent to the client to describe classes in JARs. */
     var useKlsScheme: Boolean = false,
     /** Whether external classes should be automatically converted to Kotlin. */
@@ -104,7 +104,7 @@ class GsonPathConverter : JsonDeserializer<Path?> {
     }
 }
 
-data class Configuration(
+public data class Configuration(
     val codegen: CodegenConfiguration = CodegenConfiguration(),
     val compiler: CompilerConfiguration = CompilerConfiguration(),
     val completion: CompletionConfiguration = CompletionConfiguration(),

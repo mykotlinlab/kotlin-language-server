@@ -169,6 +169,7 @@ class KotlinTextDocumentService(
         TODO("not implemented")
     }
 
+    @Suppress("DEPRECATION")
     override fun documentSymbol(params: DocumentSymbolParams): CompletableFuture<List<Either<SymbolInformation, DocumentSymbol>>> = async.compute {
         LOG.info("Find symbols in {}", describeURI(params.textDocument.uri))
 
@@ -225,7 +226,7 @@ class KotlinTextDocumentService(
         lintLater(uri)
     }
 
-    override fun references(position: ReferenceParams): CompletableFuture<List<Location>?> = async.compute {
+    override fun references(position: ReferenceParams) = async.compute {
         position.textDocument.filePath
             ?.let { file ->
                 val content = sp.content(parseURI(position.textDocument.uri))
@@ -234,7 +235,7 @@ class KotlinTextDocumentService(
             }
     }
 
-    override fun semanticTokensFull(params: SemanticTokensParams): CompletableFuture<SemanticTokens> = async.compute {
+    override fun semanticTokensFull(params: SemanticTokensParams) = async.compute {
         LOG.info("Full semantic tokens in {}", describeURI(params.textDocument.uri))
 
         reportTime {
@@ -248,7 +249,7 @@ class KotlinTextDocumentService(
         }
     }
 
-    override fun semanticTokensRange(params: SemanticTokensRangeParams): CompletableFuture<SemanticTokens> = async.compute {
+    override fun semanticTokensRange(params: SemanticTokensRangeParams) = async.compute {
         LOG.info("Ranged semantic tokens in {}", describeURI(params.textDocument.uri))
 
         reportTime {
@@ -270,7 +271,7 @@ class KotlinTextDocumentService(
         return "${describeURI(position.textDocument.uri)} ${position.position.line + 1}:${position.position.character + 1}"
     }
 
-    fun updateDebounce() {
+    public fun updateDebouncer() {
         debounceLint = Debouncer(Duration.ofMillis(config.diagnostics.debounceTime))
     }
 
