@@ -28,12 +28,10 @@ fun hoverAt(file: CompiledFile, cursor: Int): Hover? {
     val location = ref.textRange
     val hoverText = DECL_RENDERER.render(target)
     val hover = MarkupContent(
-        "markdown",
-        listOf("```kotlin\n$hoverText\n```", javaDoc).filter { it.isNotEmpty() }.joinToString("\n---\n")
+        "markdown", listOf("```kotlin\n$hoverText\n```", javaDoc).filter { it.isNotEmpty() }.joinToString("\n---\n")
     )
     val range = Range(
-        position(file.content, location.startOffset),
-        position(file.content, location.endOffset)
+        position(file.content, location.startOffset), position(file.content, location.endOffset)
     )
     return Hover(hover, range)
 }
@@ -46,8 +44,7 @@ private fun typeHoverAt(file: CompiledFile, cursor: Int): Hover? {
     val hoverTextMaybe = file.bindingContextOf(expression, scope)?.let { renderTypeOf(expression, it) }
     val hoverText = hoverTextMaybe ?: return null
     val hover = MarkupContent(
-        "markdown",
-        listOf("```kotlin\n$hoverText\n```", javaDoc).filter { it.isNotEmpty() }.joinToString("\n---\n")
+        "markdown", listOf("```kotlin\n$hoverText\n```", javaDoc).filter { it.isNotEmpty() }.joinToString("\n---\n")
     )
     return Hover(hover)
 }
@@ -70,11 +67,11 @@ private val TYPE_RENDERER: DescriptorRenderer by lazy {
 private fun renderJavaDoc(text: String): String {
     val split = text.split('\n')
     return split.mapIndexed { i, it ->
-        val ret: String
-        if (i == 0) ret = it.substring(it.indexOf("/**") + 3) // get rid of the start comment characters
-        else if (i == split.size - 1) ret = it.substring(it.indexOf("*/") + 2) // get rid of the end comment characters
-        else ret = it.substring(it.indexOf('*') + 1) // get rid of any leading *
-        ret
+        when (i) {
+            0 -> it.substring(it.indexOf("/**") + 3) // get rid of the start comment characters
+            split.size - 1 -> it.substring(it.indexOf("*/") + 2) // get rid of the end comment characters
+            else -> it.substring(it.indexOf('*') + 1) // get rid of any leading *
+        }
     }.joinToString("\n")
 }
 
