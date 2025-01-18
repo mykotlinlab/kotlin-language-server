@@ -69,8 +69,8 @@ private fun renderJavaDoc(text: String): String {
     return split.mapIndexed { i, spl ->
         when (i) {
             0 -> spl.substring(spl.indexOf("/**") + 3) // get rid of the start comment characters
-            split.size - 1 -> spl.substringsplt.indexOf("*/") + 2) // get rid of the end comment characters
-            else -> spl.substringsplt.indexOf('*') + 1) // get rid of any leading *
+            split.size - 1 -> spl.substring(spl.indexOf("*/") + 2) // get rid of the end comment characters
+            else -> spl.substring(spl.indexOf('*') + 1) // get rid of any leading *
         }
     }.joinToString("\n")
 }
