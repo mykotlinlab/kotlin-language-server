@@ -53,8 +53,8 @@ private fun gradleScriptToTempFile(scriptName: String, deleteOnExit: Boolean = f
     LOG.debug("Creating temporary gradle file {}", config.absolutePath)
 
     config.bufferedWriter().use { configWriter ->
-        GradleClassPathResolver::class.java.getResourceAsStream("/$scriptName").bufferedReader().use { configReader ->
-            configReader.copyTo(configWriter)
+        GradleClassPathResolver::class.java.getResourceAsStream("/$scriptName")?.bufferedReader().use { configReader ->
+            configReader?.copyTo(configWriter)
         }
     }
 
