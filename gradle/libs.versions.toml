@@ -4,7 +4,7 @@ lsp4jVersion = "0.24.0"
 exposedVersion = "0.61.0"
 jmhVersion = "1.37"
 slf4j = "2.0.16"
-guavaVersion = "33.4.0-jre"
+guavaVersion = "33.5.0-jre"
 fernFlowerVersion = "243.22562.218"
 
 [libraries]
